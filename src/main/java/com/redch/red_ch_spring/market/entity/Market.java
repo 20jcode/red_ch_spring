@@ -1,10 +1,14 @@
 package com.redch.red_ch_spring.market.entity;
 
 import com.redch.red_ch_spring.market.dto.MarketRequest;
+import com.redch.red_ch_spring.marketDetail.entity.MarketDetail;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,25 +25,30 @@ public class Market {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(nullable = false)
     private String name;
-
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
+    private String imageUrl;
 
-    private String contractAddress;
+    private Double priceA;
 
-    private LocalDateTime startDate;
+    private Double priceB;
 
-    private LocalDateTime endDate;
+    private String tokenAContractAddress;
 
-    private LocalDateTime settlementDate;
+    private String tokenBContractAddress;
+
+    @OneToOne(cascade = jakarta.persistence.CascadeType.ALL)
+    @JoinColumn(name = "market_detail_id")
+    private MarketDetail marketDetail;
 
     public void update(MarketRequest marketRequest) {
         this.name = marketRequest.getName();
         this.description = marketRequest.getDescription();
-        this.contractAddress = marketRequest.getContractAddress();
-        this.startDate = LocalDateTime.parse(marketRequest.getStartDate());
-        this.endDate = LocalDateTime.parse(marketRequest.getEndDate());
-        this.settlementDate = LocalDateTime.parse(marketRequest.getSettlementDate());
+        this.priceA = marketRequest.getPriceA();
+        this.priceB = marketRequest.getPriceB();
+        this.imageUrl = marketRequest.getImageUrl();
     }
 }

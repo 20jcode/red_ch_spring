@@ -1,6 +1,7 @@
 package com.redch.red_ch_spring.market.dto;
 
 import com.redch.red_ch_spring.market.entity.Market;
+import com.redch.red_ch_spring.marketDetail.dto.MarketDetailResponse;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,23 +15,29 @@ public class MarketResponse {
 
         private String description;
 
-        private String contractAddress;
+        private String imageUrl;
 
-        private String startDate;
+        private Double priceA;
 
-        private String endDate;
+        private Double priceB;
 
-        private String settlementDate;
+        private String tokenAContractAddress;
+
+        private String tokenBContractAddress;
+
+        private MarketDetailResponse marketDetailResponse;
 
         public static MarketResponse of(Market market) {
-                return MarketResponse.builder()
-                        .id(market.getId())
-                        .name(market.getName())
-                        .description(market.getDescription())
-                        .contractAddress(market.getContractAddress())
-                        .startDate(market.getStartDate().toString())
-                        .endDate(market.getEndDate().toString())
-                        .settlementDate(market.getSettlementDate().toString())
-                        .build();
+            return MarketResponse.builder()
+                .id(market.getId())
+                .name(market.getName())
+                .description(market.getDescription())
+                .imageUrl(market.getImageUrl())
+                .priceA(market.getPriceA())
+                .priceB(market.getPriceB())
+                .tokenAContractAddress(market.getTokenAContractAddress())
+                .tokenBContractAddress(market.getTokenBContractAddress())
+                .marketDetailResponse(MarketDetailResponse.of(market.getMarketDetail()))
+                .build();
         }
 }

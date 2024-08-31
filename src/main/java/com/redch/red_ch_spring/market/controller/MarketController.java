@@ -33,7 +33,7 @@ public class MarketController {
 
     //전체 예측 마켓 조회
     @GetMapping("/markets")
-    @Operation(summary = "예측 마켓 조회", description = "전체 예측 마켓을 조회합니다.")
+    @Operation(summary = "예측 마켓 전체 조회", description = "전체 예측 마켓을 조회합니다.")
     public ResponseEntity<List<MarketResponse>> getMarkets() {
         return ResponseEntity.ok(marketService.getMarkets());
     }
