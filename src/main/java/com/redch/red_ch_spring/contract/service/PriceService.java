@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.redch.red_ch_spring.contract.dto.PriceResponse;
 import com.redch.red_ch_spring.contract.entity.Price;
 import com.redch.red_ch_spring.contract.entity.PriceRepository;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,24 +36,19 @@ public class PriceService {
 
         List<Integer> totalSupplyList = new ArrayList<>();
 
-        try{
-            var data = webClient.get().retrieve().bodyToMono(JsonNode.class).block();
+        var data = webClient.get().retrieve().bodyToMono(JsonNode.class).block(Duration.ofSeconds(100));
 
         for (JsonNode item : Objects.requireNonNull(data).get("items")) {
             totalSupplyList.add(item.get("token").get("total_supply").asInt());
-            }
-
-            double tokenA = (double) totalSupplyList.get(0) / totalSupplyList.get(1);
-
-            double tokenB = (double) totalSupplyList.get(1) / totalSupplyList.get(0);
-
-            Price price = new Price(LocalDateTime.now(),tokenA, tokenB);
-
-            priceRepository.save(price);
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        double tokenA = (double) totalSupplyList.get(0) / totalSupplyList.get(1);
+
+        double tokenB = (double) totalSupplyList.get(1) / totalSupplyList.get(0);
+
+        Price price = new Price(LocalDateTime.now(),tokenA, tokenB);
+
+        priceRepository.save(price);
     }
 
     public List<PriceResponse> getPricesA() {
